@@ -87,8 +87,14 @@ def process_message(msg, out_socket, temp_path):
         with open(path_to_temp_input_file, "w") as _:
             _.write(str(xml))
         
+        # should we produce a .sum file (will be produces anyway, but just with one line)
+        include_sum_file = msg.get("include_sum", False)
+
         # call APSIM
-        subprocess.call(["apsim", path_to_temp_input_file])
+        cmd_call = ["apsim", path_to_temp_input_file]
+        if not include_sum_file:
+            cmd_call.append("MaxOutputLines=1")
+        subprocess.call(cmd_call)
 
         # the result message template
         msg_template = {
@@ -97,7 +103,7 @@ def process_message(msg, out_socket, temp_path):
         }
 
         # if requested include sum file
-        if msg.get("include_sum", False):
+        if include_sum_file:
             sum_filename = xml.folder.simulation["name"] + ".sum"
             with open(temp_path + sum_filename) as _:
                 msg_template["outputs"][sum_filename] = _.read()
