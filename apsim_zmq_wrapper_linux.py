@@ -36,9 +36,13 @@ def extract_output_filenames(xml):
 
     sim = xml.folder.simulation["name"]
     area = xml.folder.simulation.area["name"]
+    if area == "paddock":
+        area = ""
+    else:
+        area = " " + area
     for tag in xml.find_all("outputfile"):
-        # TODO: this line of code may be broken if area != "paddock" @Micha please check
-        output_filenames.append(sim + ("" if area == "paddock" else area + tag["name"]) + ".out")
+        tag_name = "" if "name" not in tag.attrs else " " + tag["name"]
+        output_filenames.append(sim + area + tag_name + ".out")
 
     return output_filenames
 
