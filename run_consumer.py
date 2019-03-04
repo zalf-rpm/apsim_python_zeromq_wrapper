@@ -45,6 +45,7 @@ def run():
 
     config = {
         "user": "berg-lc",
+        "server": "localhost",
         "port": "5552",
         "out_folder": "out/"
     }
@@ -60,7 +61,7 @@ def run():
 
     context = zmq.Context.instance()
     socket = context.socket(zmq.PULL)
-    socket.connect("tcp://localhost:" + config["port"])
+    socket.connect("tcp://" + config["server"] + ":" + config["port"])
 
     msg = socket.recv_json()
     print("received message id:", msg.get("id", "None"))

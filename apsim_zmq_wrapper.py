@@ -126,6 +126,7 @@ def process_message(msg, out_socket, temp_path):
 
     except Exception as e:
         sys.stderr.write(str(e))
+        out_socket.send_json({"error": str(e)})
 
     return False
 

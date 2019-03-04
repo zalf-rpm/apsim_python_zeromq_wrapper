@@ -111,8 +111,8 @@ def process_message(msg, out_socket, temp_path):
         shutil.rmtree(temp_path, ignore_errors=True)
 
     except Exception as e:
-        print("An error occured: ", str(e))
         sys.stderr.write(str(e))
+        out_socket.send_json({"error": str(e)})
 
     return False
 

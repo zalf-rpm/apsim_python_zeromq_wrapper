@@ -46,9 +46,10 @@ def run():
 
     config = {
         "user": "berg",
+        "server": "localhost",
         "port": "5551",
         "apsim_path": "in/canola.apsim",
-        "met_path": "Goettingen.met",
+        "met_path": "in/Goettingen.met",
         "remote_met_path": None
     }
     if len(sys.argv) > 1 and __name__ == "__main__":
@@ -63,7 +64,7 @@ def run():
 
     context = zmq.Context.instance()
     socket = context.socket(zmq.PUSH)
-    socket.connect("tcp://localhost:" + config["port"])
+    socket.connect("tcp://" + config["server"] + ":" + config["port"])
 
     msg_template = {
         "id": 1,
